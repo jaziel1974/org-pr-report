@@ -1,0 +1,34 @@
+name: Org PR Review Report
+
+on:
+  repository_dispatch:
+    types: [update-report]
+  workflow_dispatch: # manual trigger if needed
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install node-fetch@2 xlsx
+
+      - name: Generate PR spreadsheet
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/pr_report.js
+
+      - name: Commit PR report
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add org_prs_needing_review.xlsx
+          git commit -m "Update org-wide PR review report" || echo "No changes to commit"
+          git push
