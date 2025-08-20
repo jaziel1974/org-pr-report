@@ -1,6 +1,6 @@
-import fs from "fs";
-import fetch from "node-fetch";
-import * as XLSX from "xlsx";
+const fs = require("fs");
+const fetch = require("node-fetch");
+const XLSX = require("xlsx");
 
 const githubToken = process.env.GITHUB_TOKEN; // set your token in env vars
 const org = "my-org"; // replace with your org name
