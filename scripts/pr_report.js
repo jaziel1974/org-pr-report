@@ -25,6 +25,7 @@ async function fetchAllPages(url) {
 }
 
 async function main() {
+  console.log(`Processing all repositories in user: ${org}`);
   const repos = await fetchAllPages(
     `https://api.github.com/users/${org}/repos?per_page=100&type=all`
   );
@@ -32,6 +33,7 @@ async function main() {
   const results = [];
 
   for (const repo of repos) {
+    console.log(`Now trying to get the repo ${repoFullName}`); // Log the repository being processed
     const prs = await fetchAllPages(
       `https://api.github.com/repos/${org}/${repo.name}/pulls?state=open&per_page=100`
     );
