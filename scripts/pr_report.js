@@ -26,7 +26,7 @@ async function fetchAllPages(url) {
 
 async function main() {
   const repos = await fetchAllPages(
-    `https://api.github.com/${org}/repos?per_page=100&type=all`
+    `https://api.github.com/users/${org}/repos?per_page=100&type=all`
   );
 
   const results = [];
