@@ -1,5 +1,8 @@
 name: Org PR Review Report
 
+permissions:
+  contents: write
+
 on:
   repository_dispatch:
     types: [update-report]
@@ -29,6 +32,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.REPORTING_REPO_TOKEN }}@github.com/jaziel1974/org-pr-report.git
           git add org_prs_needing_review.xlsx
           git commit -m "Update org-wide PR review report" || echo "No changes to commit"
           git push
