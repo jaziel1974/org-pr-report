@@ -2,19 +2,10 @@ const fs = require("fs");
 const fetch = require("node-fetch");
 const XLSX = require("xlsx");
 
-const githubToken = process.env.GITHUB_TOKEN; // set your token in env vars
-const org = "my-org"; // replace with your org name
+const githubToken = process.env.REPORTING_REPO_TOKEN; // set your token in env vars
+const org = "jaziel1974"; // replace with your org name
 const headers = { Authorization: `token ${githubToken}` };
 
-async function fetchAllPages(url) {
-  let results = [];
-  while (url) {
-    const res = await fetch(url, { headers });
-    if (!res.ok) throw new Error(`Failed request: ${res.status}`);
-    const data = await res.json();
-    results = results.concat(data);
-
-    const link = res.headers.get("link");
     if (link && link.includes("rel=\"next\"")) {
       const match = link.match(/<([^>]+)>; rel=\"next\"/);
       url = match ? match[1] : null;
@@ -27,7 +18,7 @@ async function fetchAllPages(url) {
 
 async function main() {
   const repos = await fetchAllPages(
-    `https://api.github.com/orgs/${org}/repos?per_page=100&type=all`
+    `https://api.github.com/${org}/repos?per_page=100&type=all`
   );
 
   const results = [];
