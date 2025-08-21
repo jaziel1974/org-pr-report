@@ -22,7 +22,7 @@ jobs:
 
       - name: Generate PR spreadsheet
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPORTING_REPO_TOKEN: ${{ secrets.REPORTING_REPO_TOKEN }}
         run: node scripts/pr_report.js
 
       - name: Commit PR report
