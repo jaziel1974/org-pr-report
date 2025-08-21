@@ -33,7 +33,7 @@ async function main() {
   const results = [];
 
   for (const repo of repos) {
-    console.log(`Now trying to get the repo ${repoFullName}`); // Log the repository being processed
+    console.log(`Now trying to get the repo ${repo}`); // Log the repository being processed
     const prs = await fetchAllPages(
       `https://api.github.com/repos/${org}/${repo.name}/pulls?state=open&per_page=100`
     );
