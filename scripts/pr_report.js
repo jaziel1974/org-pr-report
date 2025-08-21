@@ -44,6 +44,8 @@ async function main() {
       continue; // Skip to the next repository
     }
 
+    console.log(`Found ${prs.length} PRs`);
+    
     for (const pr of prs) {
       const reviews = await fetchAllPages(
         `https://api.github.com/repos/${org}/${repo.name}/pulls/${pr.number}/reviews`
