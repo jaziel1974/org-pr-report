@@ -33,10 +33,15 @@ async function main() {
   const results = [];
 
   for (const repo of repos) {
+    try {
     console.log(`Now trying to get the repo ${repo.name}`); // Log the repository being processed
     const prs = await fetchAllPages(
       `https://api.github.com/repos/${org}/${repo.name}/pulls?state=open&per_page=100`
     );
+    } catch (error) {
+      console.warn(`Skipping repository ${repo.name} due to ${error.message}`);
+      continue; // Skip to the next repository
+    }
 
     for (const pr of prs) {
       const reviews = await fetchAllPages(
