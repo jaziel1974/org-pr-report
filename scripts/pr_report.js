@@ -1,6 +1,5 @@
 const fs = require("fs");
 const fetch = require("node-fetch");
-const XLSX = require("xlsx");
 
 const githubToken = process.env.REPORTING_REPO_TOKEN; // set your token in env vars
 const org = "jaziel1974"; // replace with your org name
@@ -56,24 +55,24 @@ async function main() {
           ? "Needs Review"
           : "Reviewed";
 
+      // Collect unique reviewers' logins
+      const reviewers = [...new Set(reviews.map(rv => rv.user && rv.user.login).filter(Boolean))];
+
       results.push({
-        Repository: repo.name,
-        "PR Number": pr.number,
-        Title: pr.title,
-        Owner: pr.user.login,
-        URL: pr.html_url,
-        Status: status,
+        name: pr.title,
+        description: pr.body,
+        created_at: pr.created_at,
+        author: pr.user.login,
+        status: status,
+        reviewers: reviewers,
+        url: pr.html_url
       });
     }
   }
 
-  // Export to Excel
-  const worksheet = XLSX.utils.json_to_sheet(results);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "PRs");
-  XLSX.writeFile(workbook, "org_prs_needing_review.xlsx");
-
-  console.log("Spreadsheet generated: org_prs_needing_review.xlsx");
+  // Export to JSON file
+  fs.writeFileSync("org_prs_needing_review.json", JSON.stringify(results, null, 2));
+  console.log("JSON file generated: org_prs_needing_review.json");
 }
 
 main().catch((err) => {
