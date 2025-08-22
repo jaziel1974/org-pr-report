@@ -70,6 +70,7 @@ async function main() {
     }
   }
 
+  console.log(`JSON file generated: ${results}`);
   // Export to JSON file
   fs.writeFileSync("org_prs_needing_review.json", JSON.stringify(results, null, 2));
   console.log("JSON file generated: org_prs_needing_review.json");
